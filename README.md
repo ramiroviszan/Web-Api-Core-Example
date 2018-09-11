@@ -96,11 +96,11 @@ Poder podemos, pero estamos dando un motivo de cambio nuevo al dominio, esto va 
 	Utilizar CreatedAtRoute de esta forma, hará que la respuesta tenga un Header llamado **Location**, el cual tendrá el valor con la URL del Get referenciado. De esta forma sabemos como acceder al recurso una vez creado. 
 
 ## 7) Correr el test.
-	- Para correr los test unitarios, basta con pararnos sobre el proyecto de test y ejecutarlo:
+- Para correr los test unitarios, basta con pararnos sobre el proyecto de test y ejecutarlo:
 	```
 		cd WAC.WebAPI.Tests
 		dotnet test
 	```
-	- Opcionalmente pueden instalarse la extensión **.NET Core Test Explorer** o alguna similar.
+- Opcionalmente pueden instalarse la extensión **.NET Core Test Explorer** o alguna similar.
 
 	
