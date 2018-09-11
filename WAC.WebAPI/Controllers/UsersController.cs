@@ -3,31 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WAC.WebAPI.Models;
 
 namespace WAC.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class UsersController : ControllerBase
     {
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IActionResult Get()
         {
-            return new string[] { "value1", "value2" };
+            return Ok();
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        [HttpGet("{id}", Name="GetById")]
+        public IActionResult Get(int id)
         {
-            return "value";
+            return Ok();
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] UserModelIn user)
         {
+            var addedUser = new UserModelOut() { Id = 1, Username = user.Username, Age = user.Age };
+            return CreatedAtRoute("GetById", new { id = addedUser.Id }, addedUser);
         }
 
         // PUT api/values/5

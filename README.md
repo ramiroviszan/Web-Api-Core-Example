@@ -53,3 +53,41 @@ Vamos a crear un proyecto de Web Api Core paso a paso.
 	cd  WAC.WebAPI.Test
 	dotnet add package  Microsoft.AspNetCore.Mvc.Core
 ```
+
+6) Vamos a crear una implementación básica para que la prueba pase.
+- Primero debemos crear un controller WebAPI, UsersController, podemos ya hacerlo con las operaciones por defecto. Luego si no usamos alguna podemos borrarlas.
+- Cambiar los tipos de retorno a IActionResult
+- Creamos una carpeta Models dentro del proyecto de WebAPI. Las clases dentro de está carpeta suelen llevar el namespace 
+```
+	namespace WAC.WebAPI.Models { }
+```
+- Estos modelos son las represetanción de nuestros recursos para los clientes de la API REST. El cliente hablará con la WebAPI REST por medio de estos modelos. 
+**¿Podríamos usar las clases del dominio del negocio para esto?**
+Poder podemos, pero estamos dando un motivo de cambio nuevo al dominio, esto va contra SRP. Las clases del dominio no deberían cambiar por motivos referentes a la implementación de REST ni por la comunicación cliente-servidor. Otra ventaja extra es que podemos tener distintas representaciones del recurso dependiendo de la petición (ej: in y out), o podemos ocultar cierta información (UserModelOut sin campo Password), entre otros. Sin embargo, debemos considerar que de cambiar el negocio y las clases del dominio, esto genera seguramente genere un impacto en los modelos.
+- Crear los modelos UserModelIn y UserModelOut 
+- Implementaremos la operación POST de forma muy básica en el controller utilizando los modelos creados.
+	- Usaremos el Attribute [HttpPost] sobre el método Post (De forma similar existen HttpGet, HttpPut, HttpDelete, HttpPatch)
+	- Recibiremos por parámetros desde el Body HTTP un UserModelIn. Para eso definiremos el método Post de la siguiente manera:
+	```
+		...Post([FromBody] UserModelIn user) {}
+	```
+	- Podemos usar [FromUri] [FromQuery] (entre otros) dependiendo de cómo queremos que el cliente envíe la información. 
+	En caso de ser en la URL, específicamente en la URI, podemos usar el primero:
+	```
+		api/Users/{id} => api/Users/1
+		//También podemos especificar condiciones
+		api/Users/{id:min(18)}
+	```
+	Si queremos que envíen ciertos parámetros como query "URI?param=1&param=2" podemos usar el segundo.
+	- Usaremos para post un método ofrecido por ControllerBase llamado CreatedAtRoute:
+	```
+		return CreatedAtRoute("GetById", new { id = addedUser.Id }, addedUser);
+	```
+		- El primer parámetro referencia al Attribute del método get por id [HttpGet], como ven el mismo está definido de la siguiente forma:
+		```
+			[HttpGet("{id}", Name="GetById")]
+		```
+		- El segundo parámetro es el Id a colocar en la ruta del Get
+		- El tercer parámetro es el objeto a devolver en el Body de la Response Http, UserModelOut.
+	Utilizar CreatedAtRoute de esta forma, hará que la respuesta tenga un Header llamado **Location**, el cual tendrá el valor con la URL del Get referenciado. De esta forma sabemos como acceder al recurso una vez creado. 
+
