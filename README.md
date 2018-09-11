@@ -103,7 +103,21 @@ Poder podemos, pero estamos dando un motivo de cambio nuevo al dominio, esto va 
 	```
 - Opcionalmente pueden instalarse la extensión **.NET Core Test Explorer** o alguna similar.
 
-## 8) Próximamente:
+## 8) Validation Attributes
+- Podemos querer poner validaciones en nuestros modelos de tal forma de restringuir y determinar si una Request es válida o no. Para ello podemos hacer uso de Attributes sobre las propiedades de las clases Model. Luego necesitaremos checkear si el modelo es válido o no. Al UserModelIn le pondremos las siguientes restricciones:
+	```C#
+	    [Required]
+        public string Username {get; set;}
+        
+        [Required]
+        public string Password {get; set;}
+
+        [Required]
+        public int Age {get; set;}
+	```
+- Crearemos un test para probar obtener un BadRequest y luego crearemos la implementación. Veremos que de esta forma no podemos probar realmente los Attributes pero si como se comporta el controller.
+
+## Próximamente:
 - En los próximos commits veremos como seguir con nuestra aplicación.
 	- Crearemos el Application Layer con Clases Servicio y clases del Dominio
 	- Traducción Modelo a Dominio

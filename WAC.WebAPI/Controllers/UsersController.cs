@@ -29,8 +29,12 @@ namespace WAC.WebAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] UserModelIn user)
         {
-            var addedUser = new UserModelOut() { Id = 1, Username = user.Username, Age = user.Age };
-            return CreatedAtRoute("GetById", new { id = addedUser.Id }, addedUser);
+            if(ModelState.IsValid) {
+                var addedUser = new UserModelOut() { Id = 1, Username = user.Username, Age = user.Age };
+                return CreatedAtRoute("GetById", new { id = addedUser.Id }, addedUser);
+            } else {
+                return BadRequest(ModelState);
+            }
         }
 
         // PUT api/values/5

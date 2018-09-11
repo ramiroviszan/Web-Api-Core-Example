@@ -27,5 +27,24 @@ namespace WAC.WebAPI.Tests
             Assert.AreEqual(modelIn.Username, modelOut.Username);
             Assert.AreEqual(modelIn.Age, modelOut.Age);
         }
+
+        [TestMethod]
+        public void CreateFailedUserTest()
+        {
+            //Arrange
+            var modelIn = new UserModelIn(); 
+            var controller = new UsersController();
+
+            //We need to force the error in de ModelState
+            controller.ModelState.AddModelError("", "Error");
+            var result = controller.Post(modelIn);
+
+            //Act
+            var createdResult = result as BadRequestObjectResult;
+
+            //Assert
+            Assert.IsNotNull(createdResult);
+            Assert.AreEqual(400, createdResult.StatusCode);
+        }
     }
 }
