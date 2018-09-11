@@ -103,4 +103,12 @@ Poder podemos, pero estamos dando un motivo de cambio nuevo al dominio, esto va 
 	```
 - Opcionalmente pueden instalarse la extensión **.NET Core Test Explorer** o alguna similar.
 
+## 8) Próximamente:
+- En los próximos commits veremos como seguir con nuestra aplicación.
+	- Crearemos el Application Layer con Clases Servicio y clases del Dominio
+	- Traducción Modelo a Dominio
+	- Veremos Inversión del Control e Inyección de dependencias utilizando IOC built-in de .NETCore
+	- Autenticación con JWT
+	
+
 	
