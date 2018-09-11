@@ -25,6 +25,7 @@ namespace WAC.WebAPI.Tests
             Assert.AreEqual("GetById", createdResult.RouteName);
             Assert.AreEqual(201, createdResult.StatusCode);
             Assert.AreEqual(modelIn.Username, modelOut.Username);
+            Assert.AreEqual(modelIn.Age, modelOut.Age);
         }
     }
 }
