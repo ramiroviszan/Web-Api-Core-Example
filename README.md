@@ -165,7 +165,7 @@ Vamos a reescribir nuestro post para que delegue a la lógica de negocio el rest
 	- Este mismo principio puede ser utilizado para instanciar un único contexto de EntityFramework por cada petición. Trabajando de manera conectada durante el tiempo que demora en procesarse una petición. 
 	- En el siguiente paso veremos como configurar IOC.
 
-## 9) Configurando IOC
+## 10) Configurando IOC
 	- Sin hacerlo explícito, ya hemos desarrollado este ejemplo para que el IOC y la inyección de dependencias sea muy sencilla de hacer.
 	- El primer paso será cambiar el constructor del controller a:
 	```C#
