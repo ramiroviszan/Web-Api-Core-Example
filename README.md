@@ -130,6 +130,7 @@ Vamos a reescribir nuestro post para que delegue a la lógica de negocio el rest
 	```
 - Pasaremos a escribir una primer prueba unitaria para crear un Usuario. Algo que nos puede ayudar es pensar esta prueba como si la misma fuera el método Post del UsersController. Diseñaremos esta prueba de la forma que conocemos hasta ahora, y luego la diseñaremos utilizando MOQ.
 	```C#
+	
 	private IUserService userService;
 	private User user;
 	
@@ -158,6 +159,7 @@ Vamos a reescribir nuestro post para que delegue a la lógica de negocio el rest
 	- El segundo proyecto será **WAC.Application.Users** donde colocaremos las implementaciones de los contratos anteriores.
 	- Por último crearemos un proyecto para el dominio de usuarios **WAC.Domain.Users**. Aquí pondremos las entidades del negocio.
 	- Las implementaciones son básicas, solo buscamos pasar el Test. Luego la idea es repetir la línea de pensamiento hasta que cumplamos con la funcionalidad solicitada.
+	- Las clases del dominio deberían haber sido creadas con pruebas específicas, en este momento nuestra prueba está probando tanto la implementación de UserService como la implementación de User. 
 
 ## Próximamente:
 - En los próximos commits veremos como seguir con nuestra aplicación.
