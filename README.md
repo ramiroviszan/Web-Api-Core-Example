@@ -129,9 +129,10 @@ Vamos a reescribir nuestro post para que delegue a la lógica de negocio el rest
 		cd ..
 	```
 - Pasaremos a escribir una primer prueba unitaria para crear un Usuario. Algo que nos puede ayudar es pensar esta prueba como si la misma fuera el método Post del UsersController. Diseñaremos esta prueba de la forma que conocemos hasta ahora, y luego la diseñaremos utilizando MOQ.
-	```
-		private IUserService userService;
-
+	```C#
+	private IUserService userService;
+	private User user;
+	
         [TestInitialize]
         public void SetUp()
         {
