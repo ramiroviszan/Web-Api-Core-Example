@@ -117,10 +117,35 @@ Poder podemos, pero estamos dando un motivo de cambio nuevo al dominio, esto va 
 	```
 - Crearemos un test para probar obtener un BadRequest y luego crearemos la implementación. Veremos que de esta forma no podemos probar realmente los Attributes pero si como se comporta el controller.
 
+## 9) Creación de Application Layer // Business Layer
+Vamos a reescribir nuestro post para que delegue a la lógica de negocio el resto del procesamiento de la petición. Terminaremos teniendo:
+- Un proyecto classlib que contendrá las clases del dominio, que representaran a las entidades del negocio y sus restricciones.
+- Un proyecto classlib con clases servicio que actuarán como fachada para el Application Layer y coordinará la ejecución de la petición/funcionalidad.
+- Creamos entonces los siguientes proyectos:
+	```
+		mkdir WAC.Application.Users.Tests
+		cd WAC.Application.Users.Tests
+		dotnet new mstest
+		cd ..
+	```
+- Pasaremos a escribir una primer prueba unitaria para crear un Usuario. Algo que nos puede ayudar es pensar esta prueba como si la misma fuera el método Post del UsersController. Diseñaremos esta prueba de la forma que conocemos hasta ahora, y luego la diseñaremos utilizando MOQ.
+
+
+		mkdir WAC.Application.Users
+		cd WAC.Application.Users
+		dotnet new classlib
+		cd ..
+		mkdir WAC.Domain.Users
+		cd WAC.Domain.Users
+		dotnet new classlib
+		cd ..
+		dotnet add WAC.Application.Users.Tests/WAC.Application.Users.Tests.csproj reference WAC.Application.Users/WAC.Application.Users.csproj
+
+		
+
 ## Próximamente:
 - En los próximos commits veremos como seguir con nuestra aplicación.
 	- Crearemos el Application Layer con Clases Servicio y clases del Dominio
-	- Traducción Modelo a Dominio
 	- Veremos Inversión del Control e Inyección de dependencias utilizando IOC built-in de .NETCore
 	- Autenticación con JWT
 	
