@@ -129,11 +129,9 @@ Vamos a reescribir nuestro post para que delegue a la lógica de negocio el rest
 		cd ..
 	```
 - Pasaremos a escribir una primer prueba unitaria para crear un Usuario. Algo que nos puede ayudar es pensar esta prueba como si la misma fuera el método Post del UsersController. Diseñaremos esta prueba de la forma que conocemos hasta ahora, y luego la diseñaremos utilizando MOQ.
-	```C#
-	
-	private IUserService userService;
-	private User user;
-	
+	```
+		private IUserService userService;
+
         [TestInitialize]
         public void SetUp()
         {
@@ -161,9 +159,39 @@ Vamos a reescribir nuestro post para que delegue a la lógica de negocio el rest
 	- Las implementaciones son básicas, solo buscamos pasar el Test. Luego la idea es repetir la línea de pensamiento hasta que cumplamos con la funcionalidad solicitada.
 	- Las clases del dominio deberían haber sido creadas con pruebas específicas, en este momento nuestra prueba está probando tanto la implementación de UserService como la implementación de User. 
 
+## 9) Conectando la WebAPI REST con Application Layer
+	- Primero cambiaremos la implementación del método POST para que use **UserService/SignUp**.
+	- Luego veremos como conectar el controller de WebApi con el UserService. Lo que queremos conseguir es evitar la dependecia generada por el new UserService en el controller. Para esto usaremos la Invesión del Control provista por .NET Core, la cual funciona gracias a la inyección de dependencias. Cuando el Controller se instancie para atender una petición, sus dependencias serán inyectadas por .NET sin que tengamos que hacer new. 
+	- Este mismo principio puede ser utilizado para instanciar un único contexto de EntityFramework por cada petición. Trabajando de manera conectada durante el tiempo que demora en procesarse una petición. 
+	- En el siguiente paso veremos como configurar IOC.
+
+## 9) Configurando IOC
+	- Sin hacerlo explícito, ya hemos desarrollado este ejemplo para que el IOC y la inyección de dependencias sea muy sencilla de hacer.
+	- El primer paso será cambiar el constructor del controller a:
+	```C#
+		
+        public UsersController(IUserService aUserService) {
+            userService = aUserService;
+        }
+	```
+	- El siguiente paso es arreglar la prueba unitaria, cómo no hemos visto Mocking aún. Debemos instanciar manualmente la dependencia para la prueba.
+	```C#
+		 var controller = new UsersController(new UserService());
+	```
+	- El último paso será configurar el IOC en el Startup.cs del proyecto de WebAPI, en el método ConfigureServices:
+	```C#
+		public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddScoped<IUserService, UserService>();
+		}
+	```
+	- De forma similar podemos configurar el Contexto de EF. Ver en Startup.cs
+
 ## Próximamente:
 - En los próximos commits veremos como seguir con nuestra aplicación.
-	- Veremos Inversión del Control e Inyección de dependencias utilizando IOC built-in de .NETCore
+	- Mocking con MOQ
 	- Autenticación con JWT
 	
 

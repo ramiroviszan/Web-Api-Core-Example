@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WAC.WebAPI.Models;
+using WAC.Contracts.Application.Users;
+using WAC.Application.Users;
+using WAC.Domain.Users;
 
 namespace WAC.WebAPI.Controllers
 {
@@ -11,6 +14,12 @@ namespace WAC.WebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private IUserService userService;
+
+        public UsersController() {
+            userService = new UserService();
+        }
+
         // GET api/values
         [HttpGet]
         public IActionResult Get()
@@ -27,10 +36,12 @@ namespace WAC.WebAPI.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody] UserModelIn user)
+        public IActionResult Post([FromBody] UserModelIn userIn)
         {
             if(ModelState.IsValid) {
-                var addedUser = new UserModelOut() { Id = 1, Username = user.Username, Age = user.Age };
+                var user = new User(userIn.Username, userIn.Password, userIn.Age);
+                userService.SignUp(user);
+                var addedUser = new UserModelOut() { Id = user.Id, Username = userIn.Username, Age = userIn.Age };
                 return CreatedAtRoute("GetById", new { id = addedUser.Id }, addedUser);
             } else {
                 return BadRequest(ModelState);
