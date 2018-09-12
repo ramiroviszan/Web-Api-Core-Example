@@ -129,23 +129,36 @@ Vamos a reescribir nuestro post para que delegue a la lógica de negocio el rest
 		cd ..
 	```
 - Pasaremos a escribir una primer prueba unitaria para crear un Usuario. Algo que nos puede ayudar es pensar esta prueba como si la misma fuera el método Post del UsersController. Diseñaremos esta prueba de la forma que conocemos hasta ahora, y luego la diseñaremos utilizando MOQ.
+	```
+		private IUserService userService;
 
+        [TestInitialize]
+        public void SetUp()
+        {
+            user = GetUser();
+            userService = new UserService(t);
+        }
 
-		mkdir WAC.Application.Users
-		cd WAC.Application.Users
-		dotnet new classlib
-		cd ..
-		mkdir WAC.Domain.Users
-		cd WAC.Domain.Users
-		dotnet new classlib
-		cd ..
-		dotnet add WAC.Application.Users.Tests/WAC.Application.Users.Tests.csproj reference WAC.Application.Users/WAC.Application.Users.csproj
+        private User GetUser()
+        {
+            var user = new User("User1", "Pass", 23);
+            return user;
+        }
 
-		
+        [TestMethod]
+        public void SignUpTest()
+        {
+            userService.SignUp(user);
+            Assert.AreEquals(user, userService.Get(user));
+        }
+	```
+- Tomaremos un shortcut en el proceso y crearemos 3 proyectos para poder implementar la prueba. 
+	- El primero será **WAC.Contracts.Application.Users** donde colocaremos las interfaces como IUserService, las cuales son requeridas por quien quiera usar el Application Layer y serán implementadas por dicha capa.
+	- El segundo proyecto será **WAC.Application.Users** donde colocaremos las implementaciones de los contratos anteriores.
+	- Por último crearemos un proyecto para el dominio de usuarios **WAC.Domain.Users**. Aquí pondremos las entidades del negocio.
 
 ## Próximamente:
 - En los próximos commits veremos como seguir con nuestra aplicación.
-	- Crearemos el Application Layer con Clases Servicio y clases del Dominio
 	- Veremos Inversión del Control e Inyección de dependencias utilizando IOC built-in de .NETCore
 	- Autenticación con JWT
 	
