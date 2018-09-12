@@ -156,6 +156,7 @@ Vamos a reescribir nuestro post para que delegue a la lógica de negocio el rest
 	- El primero será **WAC.Contracts.Application.Users** donde colocaremos las interfaces como IUserService, las cuales son requeridas por quien quiera usar el Application Layer y serán implementadas por dicha capa.
 	- El segundo proyecto será **WAC.Application.Users** donde colocaremos las implementaciones de los contratos anteriores.
 	- Por último crearemos un proyecto para el dominio de usuarios **WAC.Domain.Users**. Aquí pondremos las entidades del negocio.
+	- Las implementaciones son básicas, solo buscamos pasar el Test. Luego la idea es repetir la línea de pensamiento hasta que cumplamos con la funcionalidad solicitada.
 
 ## Próximamente:
 - En los próximos commits veremos como seguir con nuestra aplicación.

@@ -12,4 +12,10 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WAC.Application.Users\WAC.Application.Users.csproj" />
+    <ProjectReference Include="..\WAC.Domain.Users\WAC.Domain.Users.csproj" />
+    <ProjectReference Include="..\WAC.Contracts.Application.Users\WAC.Contracts.Application.Users.csproj" />
+  </ItemGroup>
+
 </Project>

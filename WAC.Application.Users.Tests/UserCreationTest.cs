@@ -1,17 +1,21 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WAC.Contracts.Application.Users;
+using WAC.Application.Users;
+using WAC.Domain.Users;
 
 namespace WAC.Application.Users.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class UserCreationTest
     {
         private IUserService userService;
+        private User user;
 
         [TestInitialize]
         public void SetUp()
         {
             user = GetUser();
-            userService = new UserService(t);
+            userService = new UserService();
         }
 
         private User GetUser()
@@ -24,7 +28,7 @@ namespace WAC.Application.Users.Tests
         public void SignUpTest()
         {
             userService.SignUp(user);
-            Assert.AreEquals(user, userService.Get(user));
+            Assert.AreEqual(user, userService.Get(user.Id));
         }
 
     }
