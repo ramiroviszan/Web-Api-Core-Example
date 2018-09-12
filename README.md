@@ -166,28 +166,33 @@ Vamos a reescribir nuestro post para que delegue a la lógica de negocio el rest
 	- En el siguiente paso veremos como configurar IOC.
 
 ## 10) Configurando IOC
-	- Sin hacerlo explícito, ya hemos desarrollado este ejemplo para que el IOC y la inyección de dependencias sea muy sencilla de hacer.
-	- El primer paso será cambiar el constructor del controller a:
+
+- Sin hacerlo explícito, ya hemos desarrollado este ejemplo para que el IOC y la inyección de dependencias sea muy sencilla de hacer.
+- El primer paso será cambiar el constructor del controller a:
+	
 	```C#
 		
         public UsersController(IUserService aUserService) {
             userService = aUserService;
         }
 	```
-	- El siguiente paso es arreglar la prueba unitaria, cómo no hemos visto Mocking aún. Debemos instanciar manualmente la dependencia para la prueba.
+- El siguiente paso es arreglar la prueba unitaria, cómo no hemos visto Mocking aún. Debemos instanciar manualmente la dependencia para la prueba.
+	
 	```C#
 		 var controller = new UsersController(new UserService());
 	```
-	- El último paso será configurar el IOC en el Startup.cs del proyecto de WebAPI, en el método ConfigureServices:
+	
+- El último paso será configurar el IOC en el Startup.cs del proyecto de WebAPI, en el método ConfigureServices:
+	
 	```C#
 		public void ConfigureServices(IServiceCollection services)
-        {
+        	{
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddScoped<IUserService, UserService>();
 		}
 	```
-	- De forma similar podemos configurar el Contexto de EF. Ver en Startup.cs
+- De forma similar podemos configurar el Contexto de EF. Ver en Startup.cs
 
 ## Próximamente:
 - En los próximos commits veremos como seguir con nuestra aplicación.
