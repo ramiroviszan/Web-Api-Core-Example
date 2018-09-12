@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WAC.WebAPI.Models;
 using WAC.Contracts.Application.Users;
-using WAC.Application.Users;
 using WAC.Domain.Users;
 
 namespace WAC.WebAPI.Controllers
@@ -16,8 +15,8 @@ namespace WAC.WebAPI.Controllers
     {
         private IUserService userService;
 
-        public UsersController() {
-            userService = new UserService();
+        public UsersController(IUserService aUserService) {
+            userService = aUserService;
         }
 
         // GET api/values

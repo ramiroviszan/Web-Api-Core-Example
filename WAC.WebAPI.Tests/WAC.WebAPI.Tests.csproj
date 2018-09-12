@@ -15,6 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WAC.WebAPI\WAC.WebAPI.csproj" />
+    <ProjectReference Include="..\WAC.Application.Users\WAC.Application.Users.csproj" />
+    <ProjectReference Include="..\WAC.Contracts.Application.Users\WAC.Contracts.Application.Users.csproj" />
   </ItemGroup>
 
 </Project>

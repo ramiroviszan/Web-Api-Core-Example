@@ -2,6 +2,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WAC.WebAPI.Controllers;
 using WAC.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
+using WAC.Contracts.Application.Users;
+using WAC.Application.Users;
 
 namespace WAC.WebAPI.Tests
 {
@@ -12,8 +14,9 @@ namespace WAC.WebAPI.Tests
         public void CreateValidUserTest()
         {
             //Arrange
-            var modelIn = new UserModelIn() { Username = "Alberto", Password = "pass", Age = 2 }; 
-            var controller = new UsersController();
+            var modelIn = new UserModelIn() { Username = "Alberto", Password = "pass", Age = 2 };
+            IUserService userService = new UserService(); 
+            var controller = new UsersController(userService);
             var result = controller.Post(modelIn);
 
             //Act
@@ -33,8 +36,8 @@ namespace WAC.WebAPI.Tests
         {
             //Arrange
             var modelIn = new UserModelIn(); 
-            var controller = new UsersController();
-
+            IUserService userService = new UserService(); 
+            var controller = new UsersController(userService);
             //We need to force the error in de ModelState
             controller.ModelState.AddModelError("", "Error");
             var result = controller.Post(modelIn);
