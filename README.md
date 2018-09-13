@@ -247,17 +247,17 @@ Usaremos EF en memoria para el desarrollo.
 	También agregamos el using al namespace del paquete.
 - Ahora tenemos que configurar nuestro ConnectionString. Para eso vamos a los archivos de WebAPI **appsettings.Development.json** y **appsettings.json** y agregamos la siguientes entradas:
 En caso de usar EF InMemory, en el primer archivo:
+
 	```json
 		"ConnectionStrings": {
 			"WACDatabase":"Server=(localdb)\\mssqllocaldb;Database=EFProviders.InMemory;Trusted_Connection=True;ConnectRetryCount=0;"
 		}
 	```
 En caso de usar una base de datos real, por ejemplo en producción o en la defensa:
-	```json
+
 		"ConnectionStrings": {
 			"WACDatabase": "Server=./SQLServer_R14;Database=WACDatabase;Trusted_Connection=True;Integrated Security=True;"
 		}
-	```
 - Buildeamos el proyecto
 	```
 		dotnet build
