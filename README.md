@@ -223,12 +223,12 @@ Antes de proceder vamos a detenernos a ver como utilizar EF Core en conjunto con
        		{
         	}
 
-			protected override void OnModelCreating(ModelBuilder modelBuilder)
-			{
-				base.OnModelCreating(modelBuilder);
-		
-				modelBuilder.Entity<User>().Property(u => u.Id).ValueGeneratedOnAdd();
-			}
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+
+			modelBuilder.Entity<User>().Property(u => u.Id).ValueGeneratedOnAdd();
+		}
 	```
 - Ahora vamos a la WebAPI a configurar el Startup.cs. De esta forma por cada request, el framework nos proveerá de una instancia del contexto.
 Usaremos EF en memoria para el desarrollo.
@@ -254,7 +254,7 @@ En caso de usar EF InMemory, en el primer archivo:
 		}
 	```
 En caso de usar una base de datos real, por ejemplo en producción o en la defensa:
-
+	
 		"ConnectionStrings": {
 			"WACDatabase": "Server=./SQLServer_R14;Database=WACDatabase;Trusted_Connection=True;Integrated Security=True;"
 		}
