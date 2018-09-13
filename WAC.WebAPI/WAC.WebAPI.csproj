@@ -10,12 +10,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\WAC.Domain.Users\WAC.Domain.Users.csproj" />
     <ProjectReference Include="..\WAC.Application.Users\WAC.Application.Users.csproj" />
     <ProjectReference Include="..\WAC.Contracts.Application.Users\WAC.Contracts.Application.Users.csproj" />
+    <ProjectReference Include="..\WAC.DataAccess\WAC.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

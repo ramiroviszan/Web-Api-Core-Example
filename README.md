@@ -129,7 +129,7 @@ Vamos a reescribir nuestro post para que delegue a la lógica de negocio el rest
 		cd ..
 	```
 - Pasaremos a escribir una primer prueba unitaria para crear un Usuario. Algo que nos puede ayudar es pensar esta prueba como si la misma fuera el método Post del UsersController. Diseñaremos esta prueba de la forma que conocemos hasta ahora, y luego la diseñaremos utilizando MOQ.
-	```
+	```C#
 		private IUserService userService;
 
         [TestInitialize]
@@ -193,6 +193,85 @@ Vamos a reescribir nuestro post para que delegue a la lógica de negocio el rest
 		}
 	```
 - De forma similar podemos configurar el Contexto de EF. Ver en Startup.cs
+
+## 11) Entity Framework Core
+Antes de proceder vamos a detenernos a ver como utilizar EF Core en conjunto con IoC.
+**NOTA: Recomendamos invesitar Unit of Work y Repository Pattern, sin embargo no lo implementaremos en este ejemplo**
+- Primero tenemos que crearnos un proyecto classlib para el acceso a datos. 
+	```
+		mkdir WAC.DataAccess
+		dotnet new classlib
+	```
+- Agregaremos al proyecto nuevo EFCore
+	```
+		cd WAC.DataAccess
+		dotnet add package Microsoft.EntityFrameworkCore
+	```
+- Agregamos la dependencia WAC.Domain.Users
+	```
+		dotnet add WAC.DataAccess/WAC.DataAccess reference WAC.Domain.Users/WAC.Domain.Users
+	```
+ - Luego crearemos la clase Contexto. 
+	La misma va a cambiar un poco respecto a EF6 de .NET Framework. El contructor recibirá un objecto **DbContextOptions** que es el objeto que crearemos en el Startup.cs de la WebAPI. De esta forma podremos pasarle el ConnectionString.
+	Tambíen podemos usar FluentAPI para configurar las relaciones, claves, mapeos etc. La sintaxis difiere un poco de EF6 de .NET Framework.
+ 	```C#
+		public class DomainContext : DbContext
+    	{
+        	public DbSet<User> Users { get; set; }
+
+        	public DomainContext(DbContextOptions<DomainContext> options) : base(options)
+       		{
+        	}
+
+			protected override void OnModelCreating(ModelBuilder modelBuilder)
+			{
+				base.OnModelCreating(modelBuilder);
+		
+				modelBuilder.Entity<User>().Property(u => u.Id).ValueGeneratedOnAdd();
+			}
+	```
+- Ahora vamos a la WebAPI a configurar el Startup.cs. De esta forma por cada request, el framework nos proveerá de una instancia del contexto.
+Usaremos EF en memoria para el desarrollo.
+	```C#
+		services.AddDbContext<DomainContext>(options => options.UseInMemoryDatabase(Configuration.GetConnectionString("WACDatabase")));
+	```
+- Para que esta línea funcione tenemos que agregar la referencia al WAC.DataAccess desde WAC.WebAPI
+	```
+		dotnet add WAC.WebAPI/WAC.WebAPI.csproj reference WAC.DataAccess/WAC.DataAccess.csproj
+	```
+	También debemos agregar el using al namespace del Context nuestro.
+- Por último debemos agregar el paquete de EFCore.InMemory para simular una base de datos no relacional en memoria. Parados sobre la carpeta de WAC.WebAPI:
+	```
+		dotnet add package Microsoft.EntityFrameworkCore.InMemory
+	```
+	También agregamos el using al namespace del paquete.
+- Ahora tenemos que configurar nuestro ConnectionString. Para eso vamos a los archivos de WebAPI **appsettings.Development.json** y **appsettings.json** y agregamos la siguientes entradas:
+En caso de usar EF InMemory, en el primer archivo:
+	```json
+		"ConnectionStrings": {
+			"WACDatabase":"Server=(localdb)\\mssqllocaldb;Database=EFProviders.InMemory;Trusted_Connection=True;ConnectRetryCount=0;"
+		}
+	```
+En caso de usar una base de datos real, por ejemplo en producción o en la defensa:
+	```json
+		"ConnectionStrings": {
+			"WACDatabase": "Server=./SQLServer_R14;Database=WACDatabase;Trusted_Connection=True;Integrated Security=True;"
+		}
+	```
+- Buildeamos el proyecto
+	```
+		dotnet build
+	```
+- EF Core no cuenta con migraciones automáticas. **Si usamos una base de datos realacional SQL** (!InMemory) entonces debemos crear las migraciones. Hay varias formas de hacer esto, pararnos sobre el proyecto del Contexto y referenciar al de arranque con los .json de configuración. O lo inverso.
+	```
+		cd WAC.DataAccess
+		dotnet ef migrations add MyFirstMigration --startup-project=../WAC.WebAPI/WAC.WebAPI.csproj
+	```
+	Luego de generar la migración debemos impactarla en la base usando
+	```
+		dotnet ef database update
+	```
+ - Y por último veremos como usarlo. Para ello diseñaremos a partir de UserService un objeto que nos sirva de acceso a datos.
 
 ## Próximamente:
 - En los próximos commits veremos como seguir con nuestra aplicación.
