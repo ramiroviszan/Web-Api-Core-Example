@@ -253,7 +253,7 @@ En caso de usar EF InMemory, en el primer archivo:
 			"WACDatabase":"Server=(localdb)\\mssqllocaldb;Database=EFProviders.InMemory;Trusted_Connection=True;ConnectRetryCount=0;"
 		}
 	```
-En caso de usar una base de datos real, por ejemplo en producción o en la defensa:
+En caso de usar una base de datos realacional, por ejemplo en producción o en la defensa:
 	
 		"ConnectionStrings": {
 			"WACDatabase": "Server=./SQLServer_R14;Database=WACDatabase;Trusted_Connection=True;Integrated Security=True;"
